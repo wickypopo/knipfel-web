@@ -52,7 +52,6 @@ export function checkBonus(setGame) {
 
       return { ...player, hasBonus, scores };
     });
-
     return hasChanges ? { ...prevGame, players } : prevGame;
   });
 }

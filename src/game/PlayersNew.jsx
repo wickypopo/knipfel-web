@@ -187,7 +187,7 @@ export default function Players() {
               rolledAmount: null,
               isRolled: false,
               ruleOut: false,
-              modal: "confirm",
+              modal: "kniffel",
               icon: Trophy,
             },
             {

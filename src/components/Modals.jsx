@@ -1,8 +1,32 @@
 import { useEffect, useState } from "react";
+import confetti from "canvas-confetti";
 import { useGame } from "../provider/GameStateProvider";
 
+function updateScore(setGame, id, getScore) {
+  setGame((prevGame) => ({
+    ...prevGame,
+    players: prevGame.players.map((player) => ({
+      ...player,
+      scores: player.scores.map((score) =>
+        score.id === id ? getScore(score) : score,
+      ),
+    })),
+  }));
+}
+
+function ruleOutScore(setGame, id) {
+  updateScore(setGame, id, (score) => ({
+    ...score,
+    internalValue: null,
+    rolledAmount: null,
+    kniffelCount: null,
+    isRolled: false,
+    ruleOut: true,
+  }));
+}
+
 export function DiceModal({ isOpen, setIsOpen, id, clickedId, label, icon }) {
-  const { game, setGame } = useGame();
+  const { setGame } = useGame();
 
   const array = [
     { icon, id: 0, active: true },
@@ -19,7 +43,7 @@ export function DiceModal({ isOpen, setIsOpen, id, clickedId, label, icon }) {
     setIcons((prevIcons) => {
       setDice(id + 1);
       return prevIcons.map((icon) => {
-        return icon.id === id || icon.id < id
+        return icon.id <= id
           ? { ...icon, active: true }
           : { ...icon, active: false };
       });
@@ -27,43 +51,17 @@ export function DiceModal({ isOpen, setIsOpen, id, clickedId, label, icon }) {
   }
 
   function confirm() {
-    setGame((prevGame) => ({
-      ...prevGame,
-      players: prevGame.players.map((player) => ({
-        ...player,
-        scores: player.scores.map((scores) => {
-          const rolled = dice * scores.value;
-          return scores.id === id
-            ? {
-                ...scores,
-                internalValue: rolled,
-                rolledAmount: dice,
-                ruleOut: false,
-              }
-            : scores;
-        }),
-      })),
+    updateScore(setGame, id, (score) => ({
+      ...score,
+      internalValue: dice * score.value,
+      rolledAmount: dice,
+      isRolled: true,
+      ruleOut: false,
     }));
   }
 
   function ruleOut() {
-    setGame((prevGame) => ({
-      ...prevGame,
-      players: prevGame.players.map((player) => ({
-        ...player,
-        scores: player.scores.map((scores) => {
-          const rolled = dice * scores.value;
-          return scores.id === id
-            ? {
-                ...scores,
-                internalValue: null,
-                rolledAmount: null,
-                ruleOut: true,
-              }
-            : scores;
-        }),
-      })),
-    }));
+    ruleOutScore(setGame, id);
   }
 
   return (
@@ -122,44 +120,20 @@ export function ConfirmationModal({
   setIsOpen,
   id,
   clickedId,
-  label,
-  icon,
 }) {
-  const { game, setGame } = useGame();
+  const { setGame } = useGame();
 
   function confirm() {
-    setGame((prevGame) => ({
-      ...prevGame,
-      players: prevGame.players.map((player) => ({
-        ...player,
-        scores: player.scores.map((scores) => {
-          return scores.id === id
-            ? {
-                ...scores,
-                isRolled: true,
-                ruleOut: false,
-              }
-            : scores;
-        }),
-      })),
+    updateScore(setGame, id, (score) => ({
+      ...score,
+      internalValue: score.value,
+      rolledAmount: null,
+      isRolled: true,
+      ruleOut: false,
     }));
   }
   function ruleOut() {
-    setGame((prevGame) => ({
-      ...prevGame,
-      players: prevGame.players.map((player) => ({
-        ...player,
-        scores: player.scores.map((scores) => {
-          return scores.id === id
-            ? {
-                ...scores,
-                isRolled: false,
-                ruleOut: true,
-              }
-            : scores;
-        }),
-      })),
-    }));
+    ruleOutScore(setGame, id);
   }
 
   return (
@@ -195,7 +169,7 @@ export function ConfirmationModal({
   );
 }
 
-export function NumberModal({ isOpen, setIsOpen, id, clickedId, label, icon }) {
+export function NumberModal({ isOpen, setIsOpen, id, clickedId }) {
   const numbersData = [
     { id: 0, value: 5, selected: false },
     { id: 1, value: 6, selected: false },
@@ -228,7 +202,7 @@ export function NumberModal({ isOpen, setIsOpen, id, clickedId, label, icon }) {
   const [numbers, setNumbers] = useState(numbersData);
   const [selection, setSelection] = useState({});
 
-  const { game, setGame } = useGame();
+  const { setGame } = useGame();
 
   function select(id) {
     setNumbers((prevNumbers) => {
@@ -242,22 +216,21 @@ export function NumberModal({ isOpen, setIsOpen, id, clickedId, label, icon }) {
   }
 
   function confirm() {
-    setGame((prevGame) => ({
-      ...prevGame,
-      players: prevGame.players.map((player) => ({
-        ...player,
-        scores: player.scores.map((scores) => {
-          return scores.id === id
-            ? {
-                ...scores,
-                internalValue: selection.value,
-                rolledAmount: selection.value,
-                ruleOut: false,
-              }
-            : scores;
-        }),
-      })),
+    if (selection.value === undefined) {
+      return;
+    }
+
+    updateScore(setGame, id, (score) => ({
+      ...score,
+      internalValue: selection.value,
+      rolledAmount: selection.value,
+      isRolled: true,
+      ruleOut: false,
     }));
+  }
+
+  function ruleOut() {
+    ruleOutScore(setGame, id);
   }
 
   return (
@@ -303,6 +276,143 @@ export function NumberModal({ isOpen, setIsOpen, id, clickedId, label, icon }) {
                 Streichen
               </button>
             </div>
+          </div>
+        </div>
+      ) : null}
+    </>
+  );
+}
+
+export function KniffelModal({ isOpen, setIsOpen, id, clickedId }) {
+  const { setGame } = useGame();
+  const [count, setCount] = useState(1);
+  const kniffelCounts = [1, 2, 3, 4, 5];
+
+  function confirm() {
+    updateScore(setGame, id, (score) => ({
+      ...score,
+      internalValue: count * score.value,
+      rolledAmount: count,
+      kniffelCount: count,
+      isRolled: true,
+      ruleOut: false,
+    }));
+  }
+
+  function ruleOut() {
+    ruleOutScore(setGame, id);
+  }
+
+  return (
+    <>
+      {isOpen && id === clickedId ? (
+        <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+          <div className="w-[80vw] bg-white border-2 shadow-[12px_12px_0px] p-8 z-90 rounded-4xl flex flex-col justify-center gap-4">
+            <span className="text-lg">Wie viele Kniffel hast du gewÃ¼rfelt?</span>
+            <div className="grid grid-cols-5 gap-1">
+              {kniffelCounts.map((num) => (
+                <button
+                  key={num}
+                  className="size-12 rounded-full border-2 flex items-center justify-center leading-none text-xl font-bold"
+                  onClick={() => setCount(num)}
+                  style={
+                    count === num
+                      ? { backgroundColor: "oklch(79.2% 0.209 151.711)" }
+                      : null
+                  }
+                >
+                  {num}
+                </button>
+              ))}
+            </div>
+
+            <div className="flex gap-2">
+              <button
+                onClick={() => {
+                  setIsOpen(false);
+                  confirm();
+                }}
+                className="border-2 py-2 px-4 rounded-full w-full font-medium"
+              >
+                BestÃ¤tigen
+              </button>
+              <button
+                onClick={() => {
+                  setIsOpen(false);
+                  ruleOut();
+                }}
+                className="bg-red-500 border-2 py-2 px-4 rounded-full w-full font-medium"
+              >
+                Streichen
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
+    </>
+  );
+}
+
+export function EndGameModal({ isOpen, players }) {
+  const { setGame } = useGame();
+  const placements = players
+    .map((player) => ({
+      id: player.id,
+      name: player.name,
+      totalScore: player.scores.reduce(
+        (total, score) => total + (score.internalValue ?? 0),
+        0,
+      ),
+    }))
+    .sort((a, b) => b.totalScore - a.totalScore);
+  const winner = placements[0];
+
+  useEffect(() => {
+    if (!isOpen) {
+      return;
+    }
+
+    confetti({
+      particleCount: 160,
+      spread: 80,
+      origin: { y: 0.65 },
+    });
+  }, [isOpen]);
+
+  function startNewGame() {
+    setGame({ players: [] });
+    window.location.href = "/";
+  }
+
+  return (
+    <>
+      {isOpen && winner ? (
+        <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+          <div className="w-[80vw] bg-white border-2 shadow-[12px_12px_0px] p-8 z-90 rounded-4xl flex flex-col justify-center gap-4">
+            <span className="text-lg font-medium">
+              Herzlichen Glückwunsch {winner.name}, du gewinnst!
+            </span>
+
+            <div className="flex flex-col gap-2">
+              {placements.map((player, index) => (
+                <div
+                  key={player.id}
+                  className="border-2 rounded-full py-2 px-4 flex items-center justify-between font-medium"
+                >
+                  <span>
+                    {index + 1}. {player.name}
+                  </span>
+                  <span>{player.totalScore}</span>
+                </div>
+              ))}
+            </div>
+
+            <button
+              onClick={startNewGame}
+              className="border-2 py-2 px-4 rounded-full w-full font-medium"
+            >
+              Neues Spiel starten
+            </button>
           </div>
         </div>
       ) : null}

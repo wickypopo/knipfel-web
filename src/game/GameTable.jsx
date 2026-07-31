@@ -3,6 +3,8 @@ import { Button } from "../components/Buttons";
 import {
   ConfirmationModal,
   DiceModal,
+  EndGameModal,
+  KniffelModal,
   NumberModal,
 } from "../components/Modals";
 import { gameTable } from "../data/data";
@@ -15,6 +17,12 @@ export default function GameTable() {
   const [isOpen, setIsOpen] = useState(false);
   const [clickedId, setClickedId] = useState(null);
   const [isDisabled, setIsDisabled] = useState(false);
+  const isGameFinished =
+    !isOpen &&
+    game.players.length > 0 &&
+    game.players.every((player) =>
+      player.scores.every((score) => score.internalValue !== null || score.ruleOut),
+    );
 
   useEffect(() => {
     checkBonus(setGame);
@@ -112,12 +120,21 @@ export default function GameTable() {
                       icon={score.icon}
                     />
                   ) : null}
+                  {score.modal === "kniffel" ? (
+                    <KniffelModal
+                      isOpen={isOpen}
+                      setIsOpen={setIsOpen}
+                      id={score.id}
+                      clickedId={clickedId}
+                    />
+                  ) : null}
                 </>
               );
             })}
           </div>
         ))}
       </div>
+      <EndGameModal isOpen={isGameFinished} players={game.players} />
     </div>
   );
 }
