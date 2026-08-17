@@ -209,7 +209,7 @@ export default function Players() {
     setPlayer("");
   }
   return (
-    <div className="h-full w-full flex flex-col">
+    <div className="h-full w-full flex flex-col gap-4">
       <div className="flex flex-col grow gap-4">
         <div className="flex flex-col gap-2 ">
           {game.players.map((player) => (
