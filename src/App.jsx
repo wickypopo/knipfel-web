@@ -7,7 +7,7 @@ import { Link, Route, Routes } from "react-router-dom";
 function App() {
   const [gameState, setGameState] = useState({});
   return (
-    <main className="h-screen w-screen p-8 pt-20 flex flex-col gap-16 bg-pink-400">
+    <main className="min-h-screen w-screen p-8 pt-20 flex flex-col gap-16 bg-pink-400">
       <Link to="/" className="w-full flex justify-center">
         <img src="/Logo.svg" />
       </Link>
