@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import confetti from "canvas-confetti";
 import { useGame } from "../provider/GameStateProvider";
+import { X } from "lucide-react";
 
 function updateScore(setGame, id, getScore) {
   setGame((prevGame) => ({
@@ -68,7 +69,13 @@ export function DiceModal({ isOpen, setIsOpen, id, clickedId, label, icon }) {
     <>
       {isOpen && id === clickedId ? (
         <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-          <div className="w-[80vw] bg-white border-2 shadow-[12px_12px_0px] p-8 z-90 rounded-4xl flex flex-col justify-center gap-4">
+          <div className="w-[80vw] bg-white border-2 shadow-[12px_12px_0px] p-8 pt-14 z-90 rounded-4xl flex flex-col justify-center gap-4 relative">
+            <X
+              className="absolute top-5 right-5"
+              onClick={() => {
+                setIsOpen(false);
+              }}
+            />
             <div className="flex w-full">
               {icons.map((icon, index) => {
                 const Icon = icon.icon;
@@ -92,20 +99,20 @@ export function DiceModal({ isOpen, setIsOpen, id, clickedId, label, icon }) {
               <button
                 onClick={() => {
                   setIsOpen(false);
-                  confirm();
-                }}
-                className="border-2 py-2 px-4 rounded-full w-full font-medium"
-              >
-                Bestätigen
-              </button>
-              <button
-                onClick={() => {
-                  setIsOpen(false);
                   ruleOut();
                 }}
                 className="bg-red-500 border-2 py-2 px-4 rounded-full w-full font-medium"
               >
                 Streichen
+              </button>
+              <button
+                onClick={() => {
+                  setIsOpen(false);
+                  confirm();
+                }}
+                className="border-2 py-2 px-4 rounded-full w-full font-medium text-white bg-black"
+              >
+                Bestätigen
               </button>
             </div>
           </div>
@@ -115,12 +122,7 @@ export function DiceModal({ isOpen, setIsOpen, id, clickedId, label, icon }) {
   );
 }
 
-export function ConfirmationModal({
-  isOpen,
-  setIsOpen,
-  id,
-  clickedId,
-}) {
+export function ConfirmationModal({ isOpen, setIsOpen, id, clickedId }) {
   const { setGame } = useGame();
 
   function confirm() {
@@ -140,7 +142,13 @@ export function ConfirmationModal({
     <>
       {isOpen && id === clickedId ? (
         <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-          <div className="w-[80vw] bg-white border-2 shadow-[12px_12px_0px] p-8 z-90 rounded-4xl flex flex-col justify-center gap-4">
+          <div className="w-[80vw] bg-white border-2 shadow-[12px_12px_0px] p-8 pt-14 relative z-90 rounded-4xl flex flex-col justify-center gap-4">
+            <X
+              className="absolute top-5 right-5"
+              onClick={() => {
+                setIsOpen(false);
+              }}
+            />
             <span className="text-lg">Confirm</span>
             <div className="flex gap-2">
               <button
@@ -237,7 +245,13 @@ export function NumberModal({ isOpen, setIsOpen, id, clickedId }) {
     <>
       {isOpen && id === clickedId ? (
         <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-          <div className="w-[80vw] bg-white border-2 shadow-[12px_12px_0px] p-8 z-90 rounded-4xl flex flex-col justify-center gap-4">
+          <div className="w-[80vw] bg-white border-2 shadow-[12px_12px_0px] p-8 pt-14 relative z-90 rounded-4xl flex flex-col justify-center gap-4">
+            <X
+              className="absolute top-5 right-5"
+              onClick={() => {
+                setIsOpen(false);
+              }}
+            />
             <span className="text-lg">Was hast du gewürfelt?</span>
             <div className="grid grid-cols-5 gap-1">
               {numbers.map((num) => (
@@ -308,7 +322,9 @@ export function KniffelModal({ isOpen, setIsOpen, id, clickedId }) {
       {isOpen && id === clickedId ? (
         <div className="absolute inset-0 flex items-center justify-center bg-black/30">
           <div className="w-[80vw] bg-white border-2 shadow-[12px_12px_0px] p-8 z-90 rounded-4xl flex flex-col justify-center gap-4">
-            <span className="text-lg">Wie viele Kniffel hast du gewÃ¼rfelt?</span>
+            <span className="text-lg">
+              Wie viele Kniffel hast du gewÃ¼rfelt?
+            </span>
             <div className="grid grid-cols-5 gap-1">
               {kniffelCounts.map((num) => (
                 <button
