@@ -122,7 +122,7 @@ export function DiceModal({ isOpen, setIsOpen, id, clickedId, label, icon }) {
   );
 }
 
-export function ConfirmationModal({ isOpen, setIsOpen, id, clickedId }) {
+export function ConfirmationModal({ isOpen, setIsOpen, id, clickedId, label }) {
   const { setGame } = useGame();
 
   function confirm() {
@@ -137,7 +137,6 @@ export function ConfirmationModal({ isOpen, setIsOpen, id, clickedId }) {
   function ruleOut() {
     ruleOutScore(setGame, id);
   }
-
   return (
     <>
       {isOpen && id === clickedId ? (
@@ -149,25 +148,25 @@ export function ConfirmationModal({ isOpen, setIsOpen, id, clickedId }) {
                 setIsOpen(false);
               }}
             />
-            <span className="text-lg">Confirm</span>
+            <span className="text-xl font-medium">{label}</span>
             <div className="flex gap-2">
               <button
                 onClick={() => {
-                  confirm();
                   setIsOpen(false);
-                }}
-                className="border-2 py-2 px-4 rounded-full w-full font-medium"
-              >
-                Bestätigen
-              </button>
-              <button
-                onClick={() => {
                   ruleOut();
-                  setIsOpen(false);
                 }}
                 className="bg-red-500 border-2 py-2 px-4 rounded-full w-full font-medium"
               >
                 Streichen
+              </button>
+              <button
+                onClick={() => {
+                  setIsOpen(false);
+                  confirm();
+                }}
+                className="border-2 py-2 px-4 rounded-full w-full font-medium text-white bg-black"
+              >
+                Bestätigen
               </button>
             </div>
           </div>
@@ -274,20 +273,20 @@ export function NumberModal({ isOpen, setIsOpen, id, clickedId }) {
               <button
                 onClick={() => {
                   setIsOpen(false);
-                  confirm();
-                }}
-                className="border-2 py-2 px-4 rounded-full w-full font-medium"
-              >
-                Bestätigen
-              </button>
-              <button
-                onClick={() => {
-                  setIsOpen(false);
                   ruleOut();
                 }}
                 className="bg-red-500 border-2 py-2 px-4 rounded-full w-full font-medium"
               >
                 Streichen
+              </button>
+              <button
+                onClick={() => {
+                  setIsOpen(false);
+                  confirm();
+                }}
+                className="border-2 py-2 px-4 rounded-full w-full font-medium text-white bg-black"
+              >
+                Bestätigen
               </button>
             </div>
           </div>
@@ -352,20 +351,20 @@ export function KniffelModal({ isOpen, setIsOpen, id, clickedId }) {
               <button
                 onClick={() => {
                   setIsOpen(false);
-                  confirm();
-                }}
-                className="border-2 py-2 px-4 rounded-full w-full font-medium"
-              >
-                Bestätigen
-              </button>
-              <button
-                onClick={() => {
-                  setIsOpen(false);
                   ruleOut();
                 }}
                 className="bg-red-500 border-2 py-2 px-4 rounded-full w-full font-medium"
               >
                 Streichen
+              </button>
+              <button
+                onClick={() => {
+                  setIsOpen(false);
+                  confirm();
+                }}
+                className="border-2 py-2 px-4 rounded-full w-full font-medium text-white bg-black"
+              >
+                Bestätigen
               </button>
             </div>
           </div>
