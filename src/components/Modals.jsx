@@ -321,9 +321,15 @@ export function KniffelModal({ isOpen, setIsOpen, id, clickedId }) {
     <>
       {isOpen && id === clickedId ? (
         <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-          <div className="w-[80vw] bg-white border-2 shadow-[12px_12px_0px] p-8 z-90 rounded-4xl flex flex-col justify-center gap-4">
+          <div className="w-[80vw] bg-white border-2 shadow-[12px_12px_0px] p-8 pt-14 relative z-90 rounded-4xl flex flex-col justify-center gap-4">
+            <X
+              className="absolute top-5 right-5"
+              onClick={() => {
+                setIsOpen(false);
+              }}
+            />
             <span className="text-lg">
-              Wie viele Kniffel hast du gewÃ¼rfelt?
+              Wie viele Kniffel hast du gewürfelt?
             </span>
             <div className="grid grid-cols-5 gap-1">
               {kniffelCounts.map((num) => (
@@ -350,7 +356,7 @@ export function KniffelModal({ isOpen, setIsOpen, id, clickedId }) {
                 }}
                 className="border-2 py-2 px-4 rounded-full w-full font-medium"
               >
-                BestÃ¤tigen
+                Bestätigen
               </button>
               <button
                 onClick={() => {
