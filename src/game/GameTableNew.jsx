@@ -30,7 +30,7 @@ export default function GameTable() {
   }, [game, setGame]);
 
   return (
-    <div className="h-full w-full flex gap-2">
+    <div className="h-full w-full flex gap-2 max-w-[700px]">
       <div className="grow flex flex-col justify-between">
         {gameTable.map((row) => {
           const Icon = row.icon;

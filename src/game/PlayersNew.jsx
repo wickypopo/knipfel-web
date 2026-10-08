@@ -218,7 +218,7 @@ export default function Players() {
   }
 
   return (
-    <div className="h-full w-full flex flex-col gap-4">
+    <div className="h-full w-full flex flex-col gap-4 max-w-[700px]">
       <div className="flex flex-col grow gap-4">
         <div className="flex flex-col gap-2 ">
           {game.players.map((player) => (
@@ -228,7 +228,7 @@ export default function Players() {
                 type="text"
                 value={player.name}
                 className="border-2 bg-white outline-none w-full p-6 rounded-full"
-                disabled
+                disabled={edit}
               />
               <div className="flex absolute right-2 top-0 z-90 translate-y-1/4">
                 <Edit
