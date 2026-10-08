@@ -22,7 +22,6 @@ import {
 export default function Players() {
   const { game, setGame } = useGame();
   const [player, setPlayer] = useState("");
-  const [edit, setEdit] = useState(false);
 
   function addPlayer(e) {
     e.preventDefault();
@@ -228,17 +227,10 @@ export default function Players() {
                 type="text"
                 value={player.name}
                 className="border-2 bg-white outline-none w-full p-6 rounded-full"
-                disabled={edit}
+                disabled
+                readOnly
               />
               <div className="flex absolute right-2 top-0 z-90 translate-y-1/4">
-                <Edit
-                  size={36}
-                  className="p-2"
-                  onClick={() => {
-                    setEdit((prev) => !prev);
-                    console.log(player);
-                  }}
-                />
                 <X
                   size={36}
                   className="p-2"
@@ -267,7 +259,11 @@ export default function Players() {
           </button>
         </form>
       </div>
-      <Button text="Next" link="/game" />
+      <Button
+        text="Next"
+        link="/game"
+        variant={game.players.length > 1 ? "default" : "inactive"}
+      />
     </div>
   );
 }
