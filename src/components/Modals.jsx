@@ -69,7 +69,7 @@ export function DiceModal({ isOpen, setIsOpen, id, clickedId, label, icon }) {
     <>
       {isOpen && id === clickedId ? (
         <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-          <div className="w-[80vw] bg-white border-2 shadow-[12px_12px_0px] p-8 pt-14 z-90 rounded-4xl flex flex-col justify-center gap-4 relative">
+          <div className="max-w-[600px] bg-white border-2 shadow-[12px_12px_0px] p-8 pt-14 z-90 rounded-4xl flex flex-col justify-center gap-4 relative">
             <X
               className="absolute top-5 right-5"
               onClick={() => {
@@ -141,7 +141,7 @@ export function ConfirmationModal({ isOpen, setIsOpen, id, clickedId, label }) {
     <>
       {isOpen && id === clickedId ? (
         <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-          <div className="w-[80vw] bg-white border-2 shadow-[12px_12px_0px] p-8 pt-14 relative z-90 rounded-4xl flex flex-col justify-center gap-4">
+          <div className="max-w-[600px] bg-white border-2 shadow-[12px_12px_0px] p-8 pt-14 relative z-90 rounded-4xl flex flex-col justify-center gap-4">
             <X
               className="absolute top-5 right-5"
               onClick={() => {
@@ -244,7 +244,7 @@ export function NumberModal({ isOpen, setIsOpen, id, clickedId }) {
     <>
       {isOpen && id === clickedId ? (
         <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-          <div className="w-[80vw] bg-white border-2 shadow-[12px_12px_0px] p-8 pt-14 relative z-90 rounded-4xl flex flex-col justify-center gap-4">
+          <div className="max-w-[600px] bg-white border-2 shadow-[12px_12px_0px] p-8 pt-14 relative z-90 rounded-4xl flex flex-col justify-center gap-4">
             <X
               className="absolute top-5 right-5"
               onClick={() => {
@@ -320,7 +320,7 @@ export function KniffelModal({ isOpen, setIsOpen, id, clickedId }) {
     <>
       {isOpen && id === clickedId ? (
         <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-          <div className="w-[80vw] bg-white border-2 shadow-[12px_12px_0px] p-8 pt-14 relative z-90 rounded-4xl flex flex-col justify-center gap-4">
+          <div className="max-w-[600px] bg-white border-2 shadow-[12px_12px_0px] p-8 pt-14 relative z-90 rounded-4xl flex flex-col justify-center gap-4">
             <X
               className="absolute top-5 right-5"
               onClick={() => {
@@ -408,8 +408,8 @@ export function EndGameModal({ isOpen, players }) {
   return (
     <>
       {isOpen && winner ? (
-        <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-          <div className="w-[80vw] bg-white border-2 shadow-[12px_12px_0px] p-8 z-90 rounded-4xl flex flex-col justify-center gap-4 relative">
+        <div className="absolute inset-0 flex items-center justify-center bg-black/30 ">
+          <div className="max-w-[700px] bg-white border-2 shadow-[12px_12px_0px] p-8 z-90 rounded-4xl flex flex-col justify-center gap-4 relative">
             <X
               className="absolute top-5 right-5"
               onClick={() => {
