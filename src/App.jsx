@@ -9,7 +9,7 @@ function App() {
   return (
     <main className="min-h-screen w-screen p-8 pt-20 flex flex-col gap-16 bg-pink-400">
       <Link to="/" className="w-full flex justify-center">
-        <img src="/Logo.svg" />
+        <img src="/Logo.svg" className="max-w-[150px]" />
       </Link>
       <Routes>
         <Route path="/" element={<Players />} />

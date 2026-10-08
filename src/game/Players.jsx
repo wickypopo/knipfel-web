@@ -22,8 +22,10 @@ import {
 export default function Players() {
   const { game, setGame } = useGame();
   const [player, setPlayer] = useState("");
+  const [edit, setEdit] = useState(false);
 
   function addPlayer(e) {
+    console.log(e);
     e.preventDefault();
     setGame((prev) => ({
       ...prev,
@@ -171,6 +173,10 @@ export default function Players() {
       ],
     }));
     setPlayer("");
+  }
+
+  function editPlayer(index) {
+    console.log(index);
   }
   return (
     <div className="h-full w-full flex flex-col">

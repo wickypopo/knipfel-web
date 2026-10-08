@@ -22,6 +22,7 @@ import {
 export default function Players() {
   const { game, setGame } = useGame();
   const [player, setPlayer] = useState("");
+  const [edit, setEdit] = useState(false);
 
   function addPlayer(e) {
     e.preventDefault();
@@ -208,6 +209,14 @@ export default function Players() {
     }));
     setPlayer("");
   }
+
+  function deletePlayer(id) {
+    setGame((prev) => ({
+      ...prev,
+      players: prev.players.filter((player) => player.id !== id),
+    }));
+  }
+
   return (
     <div className="h-full w-full flex flex-col gap-4">
       <div className="flex flex-col grow gap-4">
@@ -222,8 +231,19 @@ export default function Players() {
                 disabled
               />
               <div className="flex absolute right-2 top-0 z-90 translate-y-1/4">
-                <Edit size={36} className="p-2" />
-                <X size={36} className="p-2" />
+                <Edit
+                  size={36}
+                  className="p-2"
+                  onClick={() => {
+                    setEdit((prev) => !prev);
+                    console.log(player);
+                  }}
+                />
+                <X
+                  size={36}
+                  className="p-2"
+                  onClick={() => deletePlayer(player.id)}
+                />
               </div>
             </div>
           ))}

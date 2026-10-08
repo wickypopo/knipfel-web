@@ -409,7 +409,13 @@ export function EndGameModal({ isOpen, players }) {
     <>
       {isOpen && winner ? (
         <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-          <div className="w-[80vw] bg-white border-2 shadow-[12px_12px_0px] p-8 z-90 rounded-4xl flex flex-col justify-center gap-4">
+          <div className="w-[80vw] bg-white border-2 shadow-[12px_12px_0px] p-8 z-90 rounded-4xl flex flex-col justify-center gap-4 relative">
+            <X
+              className="absolute top-5 right-5"
+              onClick={() => {
+                setIsOpen(false);
+              }}
+            />
             <span className="text-lg font-medium">
               Herzlichen Glückwunsch {winner.name}, du gewinnst!
             </span>
